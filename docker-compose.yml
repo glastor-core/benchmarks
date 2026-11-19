@@ -1,0 +1,39 @@
+services:
+  rust-axum:
+    build: ./rust-axum
+    container_name: glastor-bench-rust
+    ports:
+      - "8081:8080"
+    cpus: 4.0
+    mem_limit: 2g
+    environment:
+      - TOKIO_WORKER_THREADS=4
+
+  go-gin:
+    build: ./go-gin
+    container_name: glastor-bench-go
+    ports:
+      - "8082:8080"
+    cpus: 4.0
+    mem_limit: 2g
+    environment:
+      - GIN_MODE=release
+      - GOMAXPROCS=4
+
+  node-fastify:
+    build: ./node-fastify
+    container_name: glastor-bench-node
+    ports:
+      - "8083:8080"
+    cpus: 4.0
+    mem_limit: 2g
+    environment:
+      - NODE_ENV=production
+
+  python-fastapi:
+    build: ./python-fastapi
+    container_name: glastor-bench-python
+    ports:
+      - "8084:8080"
+    cpus: 4.0
+    mem_limit: 2g

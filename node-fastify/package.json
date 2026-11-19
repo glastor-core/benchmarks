@@ -1,0 +1,8 @@
+{
+  "name": "glastor-bench-node",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "fastify": "^5.2.0"
+  }
+}
