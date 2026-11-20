@@ -80,6 +80,14 @@ For SIMD and binary-auditing micro-benchmarks (`10–25 GiB/s` AVX-512 / NEON), 
 
 ---
 
+## ⚖️ Trade-offs & Limitations
+
+- **Synthetic JSON Ingest Workload:** This suite measures pure HTTP routing, 4 KB JSON deserialization, integer aggregation, and memory/GC behavior under sustained concurrency. It does **not** include database I/O, TLS termination, or downstream network calls—where network latency often dominates total response time across all runtimes.
+- **Single-Host Loopback Effects:** Running the load generator (`k6`/`wrk`) on the same host as the containers introduces scheduler contention. For production-grade telemetry, run `k6` from a separate machine over a low-latency LAN/VPC.
+- **Language Selection:** Higher raw throughput in Rust does not mean Rust is the right choice for every team or CRUD app; these numbers specifically demonstrate why CPU-bound gateways, high-throughput ingest pipelines, and strict `p99`/RAM budgets benefit from compiled non-GC runtimes.
+
+---
+
 ## License
 
 MIT — [GLASTOR® Core](https://glastor.es)

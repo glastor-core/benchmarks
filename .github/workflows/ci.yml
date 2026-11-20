@@ -1,0 +1,58 @@
+name: CI — Benchmark Stack Smoke Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compose-validate:
+    name: Validate docker-compose.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose syntax
+        run: docker compose config --quiet
+
+  smoke-test:
+    name: Build & Smoke Test (${{ matrix.service }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: rust-axum
+            port: 8081
+          - service: go-gin
+            port: 8082
+          - service: node-fastify
+            port: 8083
+          - service: python-fastapi
+            port: 8084
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start ${{ matrix.service }}
+        run: docker compose up -d --build ${{ matrix.service }}
+
+      - name: Verify GET /health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "http://localhost:${{ matrix.port }}/health"; then
+              echo ""
+              echo "${{ matrix.service }} healthy!"
+              exit 0
+            fi
+            sleep 1
+          done
+          docker compose logs ${{ matrix.service }}
+          exit 1
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
