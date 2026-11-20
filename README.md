@@ -7,6 +7,10 @@ Reproducible, apples-to-apples HTTP benchmark suite comparing **Rust (Axum + Tok
 
 Published by **[GLASTOR® Core](https://github.com/glastor-core)** (`glastor.es`) so every performance claim on our website can be independently audited and reproduced.
 
+<p align="center">
+  <img src="./assets/terminal-demo.svg" alt="GLASTOR® Benchmarks — Live Terminal Comparison" width="100%" />
+</p>
+
 ---
 
 ## Fair-Play Rules (Apples-to-Apples)
